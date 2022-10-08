@@ -3,3 +3,6 @@
 ################################################################################
 
 /.vs
+/ConsoleApp2/.vs
+/ConsoleApp2/ConsoleApp2/bin/Debug/netcoreapp3.1
+/ConsoleApp2/ConsoleApp2/obj
