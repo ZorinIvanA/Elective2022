@@ -13,7 +13,7 @@ namespace WebApi1.Controllers
             cat.Color = "Black";
             cat.Weight = 10;
 
-            cat.Walk()
+            cat.Walk("tesst");
 
             return Ok(cat);
         }
