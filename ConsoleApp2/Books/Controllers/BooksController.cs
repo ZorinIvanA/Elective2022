@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
+using System.Xml.Linq;
 
 namespace Books.Controllers
 {
@@ -11,32 +13,47 @@ namespace Books.Controllers
     {
         public IActionResult Get()
         {
-            var connectionString =
-                "server=DESKTOP-Q9NL26Q\\SQLEXPRESS;database=Books;Integrated Security=true;";
+            var repository = new BooksRepository();
 
+            return Ok(repository.GetAll());
+        }
 
-            using (var connection = new SqlConnection(connectionString))
-            {
-                var books = new List<Book>();
-                connection.Open();
+        [HttpGet("{id}")]
+        public IActionResult GetById(int id)
+        {
+            var repository = new BooksRepository();
 
-                using (var sqlCommand = new SqlCommand("SELECT id, Name FROM Books", connection))
-                {         
-                    var reader = sqlCommand.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        books.Add(new Book
-                        {
-                            Id = int.Parse(reader["Id"].ToString()),
-                            Name = reader["Name"].ToString(),
-                        });
-                    }
-                }
+            return Ok(repository.GetById(id));
+        }
 
-                connection.Close();
+        [HttpPost]
+        public IActionResult Post(Book book)
+        {
+            if (book == null || book.Name == null || book.Name == string.Empty)
+                return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
 
-                return Ok(books);
-            }
+            var repository = new BooksRepository();
+            repository.Insert(book);
+            return Ok();
+        }
+
+        [HttpPut]
+        public IActionResult Put(Book book)
+        {
+            if (book == null || book.Name == null || book.Name == string.Empty)
+                return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
+
+            var repository = new BooksRepository();
+            repository.Update(book);
+            return Ok();
+        }
+
+        [HttpDelete("{bookId}")]
+        public IActionResult Delete(int bookId)
+        {
+            var repository = new BooksRepository();
+            repository.Delete(bookId);
+            return Ok();            
         }
     }
 }
