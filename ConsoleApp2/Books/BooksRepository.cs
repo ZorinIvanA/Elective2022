@@ -15,7 +15,7 @@ namespace Books
 
         public List<Book> GetAll()
         {
-            return this.ExecuteCommandWithQuery($"SELECT id, Name FROM Books WHERE id={id}");
+            return this.ExecuteCommandWithQuery($"SELECT id, Name FROM Books");
         }
 
         public Book GetById(int id)
