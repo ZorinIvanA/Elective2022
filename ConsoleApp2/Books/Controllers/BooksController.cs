@@ -11,6 +11,7 @@ namespace Books.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        [HttpGet]
         public IActionResult Get()
         {
             var repository = new BooksRepository();
