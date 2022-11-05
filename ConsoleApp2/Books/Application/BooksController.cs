@@ -1,10 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Books.Domain;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace Books.Controllers
 {
@@ -12,26 +8,26 @@ namespace Books.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private IBooksRepository _booksRepository;
+        private IBooksBusinessLogic _booksBusinessLogic;
 
-        public BooksController(IBooksRepository repository)
+        public BooksController(IBooksBusinessLogic logic)
         {
-            if (repository == null)
-                throw new ArgumentNullException(nameof(repository));
+            if (logic == null)
+                throw new ArgumentNullException(nameof(logic));
 
-            _booksRepository = repository;
+            _booksBusinessLogic = logic;
         }
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_booksRepository.GetAll());
+            return Ok(_booksBusinessLogic.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            return Ok(_booksRepository.GetById(id));
+            return Ok(_booksBusinessLogic.GetById(id));
         }
 
         [HttpPost]
@@ -40,7 +36,7 @@ namespace Books.Controllers
             if (book == null || book.Name == null || book.Name == string.Empty)
                 return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
 
-            _booksRepository.Insert(book);
+            _booksBusinessLogic.Insert(book);
             return Ok();
         }
 
@@ -50,14 +46,14 @@ namespace Books.Controllers
             if (book == null || book.Name == null || book.Name == string.Empty)
                 return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
 
-            _booksRepository.Update(book);
+            _booksBusinessLogic.Update(book);
             return Ok();
         }
 
         [HttpDelete("{bookId}")]
         public IActionResult Delete(int bookId)
         {
-            _booksRepository.Delete(bookId);
+            _booksBusinessLogic.Delete(bookId);
             return Ok();
         }
     }

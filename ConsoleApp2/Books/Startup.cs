@@ -1,3 +1,5 @@
+using Books.Domain;
+using Books.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,7 @@ namespace Books
         {
             services.AddControllers();
             services.AddSingleton<IBooksRepository, BooksRepository>();
+            services.AddSingleton<IBooksBusinessLogic, BooksBusinessLogic>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

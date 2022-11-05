@@ -2,9 +2,10 @@
 using System.Data.SqlClient;
 using System.Linq;
 using System.Net;
+using Books.Domain;
 using static System.Reflection.Metadata.BlobBuilder;
 
-namespace Books
+namespace Books.Infrastructure
 {
     public class BooksRepository : IBooksRepository
     {
@@ -15,13 +16,13 @@ namespace Books
 
         public Book[] GetAll()
         {
-            return this.ExecuteCommandWithQuery(
+            return ExecuteCommandWithQuery(
                 $"SELECT id, Name FROM Books").ToArray();
         }
 
         public Book GetById(int id)
         {
-            var books = this.ExecuteCommandWithQuery($"SELECT id, Name FROM Books WHERE id={id}");
+            var books = ExecuteCommandWithQuery($"SELECT id, Name FROM Books WHERE id={id}");
 
             return books.FirstOrDefault();
         }
@@ -57,17 +58,17 @@ namespace Books
 
         public void Insert(Book book)
         {
-            this.ExecuteCommand($"INSERT INTO Books(Name, Author_id) VALUES ('{book.Name}', {book.AuthorId})");
+            ExecuteCommand($"INSERT INTO Books(Name, Author_id) VALUES ('{book.Name}', {book.AuthorId})");
         }
 
         public void Update(Book book)
         {
-            this.ExecuteCommand($"UPDATE Books SET Name = '{book.Name}', Author_Id= {book.AuthorId} WHERE Id={book.Id}");
+            ExecuteCommand($"UPDATE Books SET Name = '{book.Name}', Author_Id= {book.AuthorId} WHERE Id={book.Id}");
         }
 
         public void Delete(int id)
         {
-            this.ExecuteCommand($"DELETE FROM Books WHERE Id={id}");
+            ExecuteCommand($"DELETE FROM Books WHERE Id={id}");
         }
 
         private void ExecuteCommand(string command)

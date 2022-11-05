@@ -1,4 +1,4 @@
-﻿namespace Books
+﻿namespace Books.Domain
 {
     public interface IBooksRepository
     {
