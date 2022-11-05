@@ -1,7 +1,11 @@
 USE [master]
 GO
 
-/****** Object:  Database [Books]    Script Date: 22.10.2022 12:52:04 ******/
+/****** Object:  Database [Books]    Script Date: 05.11.2022 12:57:53 ******/
+DROP DATABASE [Books]
+GO
+
+/****** Object:  Database [Books]    Script Date: 05.11.2022 12:57:53 ******/
 CREATE DATABASE [Books]
  CONTAINMENT = NONE
  ON  PRIMARY 

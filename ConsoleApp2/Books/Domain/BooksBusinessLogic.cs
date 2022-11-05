@@ -5,10 +5,20 @@ namespace Books.Domain
     public class BooksBusinessLogic : IBooksBusinessLogic
     {
         IBooksRepository _booksRepository;
-        public BooksBusinessLogic(IBooksRepository repository)
+        IGivenBooksRepository _givenBooksRepository;
+        public BooksBusinessLogic(
+            IBooksRepository repository,
+            IGivenBooksRepository givenBooksRepository)
         {
             _booksRepository = repository ??
                 throw new ArgumentNullException(nameof(repository));
+            _givenBooksRepository = givenBooksRepository ??
+                throw new ArgumentNullException(nameof(givenBooksRepository));
+        }
+
+        public void GiveBook(GivenBook bookToGive)
+        {
+            _givenBooksRepository.Insert(bookToGive);
         }
 
         public void Delete(int id)

@@ -30,6 +30,8 @@ namespace Books
             services.AddControllers();
             services.AddSingleton<IBooksRepository, BooksRepository>();
             services.AddSingleton<IBooksBusinessLogic, BooksBusinessLogic>();
+            services.AddSingleton<IGivenBooksRepository, GivenBookRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

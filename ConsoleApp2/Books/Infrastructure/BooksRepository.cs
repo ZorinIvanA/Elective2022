@@ -7,13 +7,8 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Books.Infrastructure
 {
-    public class BooksRepository : IBooksRepository
+    public class BooksRepository : RepositoryBase, IBooksRepository
     {
-        private string GetConnectionString()
-        {
-            return "server=DESKTOP-Q9NL26Q\\SQLEXPRESS;database=Books;Integrated Security=true;";
-        }
-
         public Book[] GetAll()
         {
             return ExecuteCommandWithQuery(
@@ -25,35 +20,6 @@ namespace Books.Infrastructure
             var books = ExecuteCommandWithQuery($"SELECT id, Name FROM Books WHERE id={id}");
 
             return books.FirstOrDefault();
-        }
-
-        private List<Book> ExecuteCommandWithQuery(string command)
-        {
-            var connectionString = GetConnectionString();
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var commandText = command;
-                List<Book> books = new List<Book>();
-
-                using (var sqlCommand = new SqlCommand(commandText, connection))
-                {
-
-                    var reader = sqlCommand.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        books.Add(new Book
-                        {
-                            Id = int.Parse(reader["Id"].ToString()),
-                            Name = reader["Name"].ToString(),
-                        });
-                    }
-                }
-                connection.Close();
-
-                return books;
-            }
         }
 
         public void Insert(Book book)
@@ -69,24 +35,6 @@ namespace Books.Infrastructure
         public void Delete(int id)
         {
             ExecuteCommand($"DELETE FROM Books WHERE Id={id}");
-        }
-
-        private void ExecuteCommand(string command)
-        {
-            var connectionString = GetConnectionString();
-
-            using (var connection = new SqlConnection(connectionString))
-            {
-                connection.Open();
-                var commandText = command;
-
-                using (var sqlCommand = new SqlCommand(commandText, connection))
-                {
-                    var reader = sqlCommand.ExecuteNonQuery();
-                }
-
-                connection.Close();
-            }
         }
     }
 }

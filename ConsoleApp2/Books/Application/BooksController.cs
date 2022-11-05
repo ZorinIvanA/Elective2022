@@ -56,5 +56,13 @@ namespace Books.Controllers
             _booksBusinessLogic.Delete(bookId);
             return Ok();
         }
+
+        [HttpPost("give")]
+        public IActionResult GiveBook(GivenBook book)
+        {
+            _booksBusinessLogic.GiveBook(book);
+
+            return Ok();
+        }
     }
 }
