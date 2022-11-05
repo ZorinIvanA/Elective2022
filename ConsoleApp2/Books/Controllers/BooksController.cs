@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
@@ -11,20 +12,26 @@ namespace Books.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
+        private IBooksRepository _booksRepository;
+
+        public BooksController(IBooksRepository repository)
+        {
+            if (repository == null)
+                throw new ArgumentNullException(nameof(repository));
+
+            _booksRepository = repository;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
-            var repository = new BooksRepository();
-
-            return Ok(repository.GetAll());
+            return Ok(_booksRepository.GetAll());
         }
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
         {
-            var repository = new BooksRepository();
-
-            return Ok(repository.GetById(id));
+            return Ok(_booksRepository.GetById(id));
         }
 
         [HttpPost]
@@ -33,8 +40,7 @@ namespace Books.Controllers
             if (book == null || book.Name == null || book.Name == string.Empty)
                 return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
 
-            var repository = new BooksRepository();
-            repository.Insert(book);
+            _booksRepository.Insert(book);
             return Ok();
         }
 
@@ -44,17 +50,15 @@ namespace Books.Controllers
             if (book == null || book.Name == null || book.Name == string.Empty)
                 return BadRequest("Неправильный формат данных о книге! Введите данные о книге в правильном формате.");
 
-            var repository = new BooksRepository();
-            repository.Update(book);
+            _booksRepository.Update(book);
             return Ok();
         }
 
         [HttpDelete("{bookId}")]
         public IActionResult Delete(int bookId)
         {
-            var repository = new BooksRepository();
-            repository.Delete(bookId);
-            return Ok();            
+            _booksRepository.Delete(bookId);
+            return Ok();
         }
     }
 }

@@ -6,16 +6,17 @@ using static System.Reflection.Metadata.BlobBuilder;
 
 namespace Books
 {
-    public class BooksRepository
+    public class BooksRepository : IBooksRepository
     {
         private string GetConnectionString()
         {
             return "server=DESKTOP-Q9NL26Q\\SQLEXPRESS;database=Books;Integrated Security=true;";
         }
 
-        public List<Book> GetAll()
+        public Book[] GetAll()
         {
-            return this.ExecuteCommandWithQuery($"SELECT id, Name FROM Books");
+            return this.ExecuteCommandWithQuery(
+                $"SELECT id, Name FROM Books").ToArray();
         }
 
         public Book GetById(int id)
